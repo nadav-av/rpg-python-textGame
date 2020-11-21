@@ -8,14 +8,14 @@ import re
 running = True
 
 # Create Magic:
-fire = Spell("Fire", 10, 100, "black")
-thunder = Spell("Thunder", 12, 100, "black")
-blizzard = Spell("Blizzard", 15, 124, "black")
-meteor = Spell("Meteor", 20, 200, "black")
-quake = Spell("Quake", 14, 110, "black")
+fire = Spell("Fire", 50, 130, "black")
+thunder = Spell("Thunder", 65, 180, "black")
+blizzard = Spell("Blizzard", 100, 210, "black")
+meteor = Spell("Meteor", 200, 400, "black")
+quake = Spell("Quake", 65, 180, "black")
 
-cure = Spell("Cure", 14, 120, "white")
-revive = Spell("Revive", 25, 200, "white")
+cure = Spell("Cure", 100, 100, "white")
+revive = Spell("Revive", 200, 300, "white")
 
 # Create Items:
 potion = Item("Potion", "potion", "Heals 50 HP", 50)
@@ -129,7 +129,7 @@ while running:
                 continue
 
             player.reduce_mp(cost)
-            magic_dmg = spell.get_cost()
+            magic_dmg = spell.generate_damage()
 
             if spell.var == "black":
                 enemies[enm].take_dmg(magic_dmg)
