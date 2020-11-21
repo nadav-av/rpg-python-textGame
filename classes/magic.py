@@ -15,7 +15,7 @@ class Spell:
         return self.cost
 
     def generate_damage(self):
-        low = self.dmg + 15
-        high = self.dmg - 15
+        low = self.dmg - 15
+        high = self.dmg + 15
         return random.randrange(low, high)
 

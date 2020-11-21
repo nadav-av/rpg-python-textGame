@@ -49,15 +49,15 @@ player3_items = [{"id": potion, "qnt": 5},
                 {"id": mega_elixer, "qnt": 5},
                 {"id": grenade, "qnt": 5}]
 
-player1 = Person("Aragon:   ", 3122, 15, 300, 34, player_magic, player1_items)
-player2 = Person("Legolas:  ", 4160, 186, 311, 34, player_magic, player2_items)
-player3 = Person("Gimli:    ", 3889, 120, 288, 34, player_magic, player3_items)
+player1 = Person("Aragon:   ", 4162, 88, 350, 34, player_magic, player1_items)
+player2 = Person("Legolas:  ", 2400, 240, 152, 34, player_magic, player2_items)
+player3 = Person("Gimli:    ", 3889, 112, 290, 34, player_magic, player3_items)
 
 party = [player1, player2, player3]
 
-enemy1 = Person("Joker:    ", 4500, 700, 525, 325, player_magic,  player1_items)
-enemy2 = Person("Riddler:  ", 1200, 130, 560, 25, player_magic,  player2_items)
-enemy3 = Person("Falcon:   ", 900, 130, 560, 25, player_magic, player3_items)
+enemy1 = Person("Joker:    ", 4162, 88, 350, 34, player_magic,  player1_items)
+enemy2 = Person("Riddler:  ", 2400, 240, 152, 34, player_magic,  player2_items)
+enemy3 = Person("Falcon:   ", 3889, 112, 290, 34, player_magic, player3_items)
 
 enemies = [enemy1, enemy2, enemy3]
 
@@ -78,6 +78,11 @@ while running:
     print("\n")
     for enemy in enemies:
         enemy.get_enemy_stats()
+
+    for i in party:
+        i.mp += random.randrange(1,11)
+        if i.mp > i.max_mp:
+            i.mp = i.max_mp
 
     for player in party:
         # Player turn :
@@ -103,6 +108,7 @@ while running:
         # Spelling:
         elif index == 1:
             player.choose_magic()
+            check = False
             magic_choice = int(input("\nChoose magic: ")) - 1
             if magic_choice == -1:
                 continue
@@ -112,9 +118,15 @@ while running:
 
             while cost > player.get_mp():
                 print("You don`t have enough mp")
-                item_choice = int(input("\nChoose other spell: ")) - 1
+                magic_choice = int(input("\nChoose other spell: ")) - 1
+                if magic_choice == -1:
+                    check = True
+                    break
                 spell = player.magic[magic_choice]
                 cost = spell.get_cost()
+
+            if check:
+                continue
 
             player.reduce_mp(cost)
             magic_dmg = spell.get_cost()
@@ -206,12 +218,12 @@ while running:
                 spell = enemy.magic[magic_choice]
                 cost = spell.get_cost()
 
-            mag_dmg = spell.dmg
+            mag_dmg = spell.generate_damage()
             enemy.reduce_mp(cost)
 
             if spell.var == "white":
                 enemy.heal(mag_dmg)
-                print(bcolors.OKGREEN + "\n" + enemy.name + " heals for " + str(spell.dmg) + " HP" + bcolors.ENDC)
+                print(bcolors.OKGREEN + "\n" + enemy.name + " heals for " + str(mag_dmg) + " HP" + bcolors.ENDC)
             if spell.var == "black":
                 party[target].take_dmg(mag_dmg)
                 print(bcolors.FAIL + ename.replace(" ", "") + " " + spell.name + " " + pname.replace(" ", "") + " for: " + str(
